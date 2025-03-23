@@ -40,7 +40,7 @@ endif
 install: venv
 	@echo "Installation des dépendances..."
 	$(PYTHON_VENV) -m pip install --upgrade pip
-	$(PYTHON_VENV) -m pip install -r requirements.txt
+	$(PYTHON_VENV) -m pip install -r requirements-dev.txt
 	$(PYTHON_VENV) -m pip install flake8 pylint black pytest pytest-cov
 
 # Supprimer l'environnement virtuel
@@ -51,7 +51,7 @@ run:
 	python app.py
 
 install:
-	pip install -r requirements.txt
+	pip install -r requirements-dev.txt
 
 test:
 	pytest tests/ -v
