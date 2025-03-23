@@ -6,13 +6,16 @@ from wtforms.validators import DataRequired
 
 
 app = Flask(__name__)
-app.secret_key = 'your_secret_key'
+app.secret_key = 'iozufe4hf6FSVgt6erg-some-secret-key'
 
-booked_days = []
+booked_days: list[str] = []
+
+def sort_dates():
+    booked_days.sort(key=lambda x: tuple(map(int, x.split('-'))))
 
 
 class BookingForm(FlaskForm):
-    date = DateField('Select a Date', format='%Y-%m-%d', validators=[DataRequired()])
+    date = DateField('Select a Date (format mm/dd/yyy)', format='%Y-%m-%d', validators=[DataRequired()])
     submit = SubmitField('Book Day Off')
 
 
@@ -20,8 +23,11 @@ class BookingForm(FlaskForm):
 def index():
     form = BookingForm()
     if form.validate_on_submit():
-        booked_days.append(form.date.data.strftime('%Y-%m-%d'))
-        return redirect(url_for('index'))
+        date = form.date.data.strftime('%Y-%m-%d')
+        if date not in booked_days:
+            booked_days.append(form.date.data.strftime('%Y-%m-%d'))
+            sort_dates()
+            return redirect(url_for('index'))
     return render_template("pages/index.html", form=form, booked_days=booked_days)
 
 if __name__ == '__main__':
