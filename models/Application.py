@@ -1,10 +1,10 @@
 class Application:
+
     __instance = None
 
     def __new_app(self):
-        self.__user_logged_in = None
+        self.__logged_in_user = None
         self.__database_handler = None
-        self.__booked_days: list[str] = []
 
     def __new__(cls):
         if cls.__instance is None:
@@ -14,13 +14,8 @@ class Application:
         return cls.__instance
     
     @property
-    def booked_days(self):
-        return self.__booked_days
+    def user(self):
+        return self.__logged_in_user
     
-    def book_day(self, date: str):
-        if date not in self.__booked_days:
-            self.__booked_days.append(date)
-            self.sort_dates()
-    
-    def sort_dates(self):
-        self.__booked_days.sort(key=lambda x: tuple(map(int, x.split('-'))))
+    def login(self, user):
+        self.__logged_in_user = user
