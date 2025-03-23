@@ -4,14 +4,13 @@ from flask_wtf import FlaskForm
 from wtforms import DateField, SubmitField
 from wtforms.validators import DataRequired
 
+from models.Application import Application
+
 
 app = Flask(__name__)
 app.secret_key = 'iozufe4hf6FSVgt6erg-some-secret-key'
 
-booked_days: list[str] = []
-
-def sort_dates():
-    booked_days.sort(key=lambda x: tuple(map(int, x.split('-'))))
+application = Application()
 
 
 class BookingForm(FlaskForm):
@@ -24,11 +23,9 @@ def index():
     form = BookingForm()
     if form.validate_on_submit():
         date = form.date.data.strftime('%Y-%m-%d')
-        if date not in booked_days:
-            booked_days.append(form.date.data.strftime('%Y-%m-%d'))
-            sort_dates()
-            return redirect(url_for('index'))
-    return render_template("pages/index.html", form=form, booked_days=booked_days)
+        application.book_day(date)
+        return redirect(url_for('index'))
+    return render_template("pages/index.html", form=form, booked_days=application.booked_days)
 
 if __name__ == '__main__':
     app.run(debug=True)
