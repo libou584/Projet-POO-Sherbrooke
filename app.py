@@ -5,12 +5,15 @@ from wtforms import DateField, SubmitField
 from wtforms.validators import DataRequired
 
 from models.Application import Application
+from models.Employee import Employee
 
 
 app = Flask(__name__)
 app.secret_key = 'iozufe4hf6FSVgt6erg-some-secret-key'
 
 application = Application()
+employee = Employee(0, 'John', 'Doe', 'john.doe@udes.ca')
+application.login(employee)
 
 
 class BookingForm(FlaskForm):
@@ -23,9 +26,10 @@ def index():
     form = BookingForm()
     if form.validate_on_submit():
         date = form.date.data.strftime('%Y-%m-%d')
-        application.book_day(date)
+        application.user.book_day(date)
         return redirect(url_for('index'))
-    return render_template("pages/index.html", form=form, booked_days=application.booked_days)
+    return render_template("pages/index.html", user=application.user, form=form, booked_days=application.user.booked_days)
+
 
 if __name__ == '__main__':
     app.run(debug=True)
