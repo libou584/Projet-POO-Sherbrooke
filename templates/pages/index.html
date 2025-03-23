@@ -13,11 +13,13 @@
     }
 </style>
 <body>
-    <div class="user-info">
-        Logged in as {{ user.first_name }} {{ user.last_name }}<br>{{ user.email }}
-        <br>
-        
-    </div>
+    {% if user %}
+        <div class="user-info">
+            Logged in as {{ user.first_name }} {{ user.last_name }}<br>{{ user.email }}
+            <br>
+            <a href="{{ url_for('logout') }}">Log Out</a>
+        </div>
+    {% endif %}
     <h1>Book a Day Off</h1>
     <form method="POST">
         {{ form.hidden_tag() }}

@@ -19,3 +19,6 @@ class Application:
     
     def login(self, user):
         self.__logged_in_user = user
+
+    def logout(self):
+        self.__logged_in_user = None
