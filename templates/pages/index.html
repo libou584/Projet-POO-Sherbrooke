@@ -2,7 +2,22 @@
 <html>
 {% extends "partials/base.html" %}
 {% block content %}
+<style>
+    .user-info {
+        position: absolute;
+        top: 80px;
+        right: 20px;
+        padding: 10px;
+        font-size: 16px;
+        text-align: right;
+    }
+</style>
 <body>
+    <div class="user-info">
+        Logged in as {{ user.first_name }} {{ user.last_name }}<br>{{ user.email }}
+        <br>
+        
+    </div>
     <h1>Book a Day Off</h1>
     <form method="POST">
         {{ form.hidden_tag() }}
