@@ -11,6 +11,10 @@ class User(AbstractClass):
 
     def __str__(self):
         return f"{self.__first_name} {self.__last_name} <{self.__email}>"
+
+    @property
+    def id(self):
+        return self.__id
     
     @property
     def first_name(self):

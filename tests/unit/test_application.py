@@ -9,13 +9,14 @@ def test_application_instance():
     assert app1 is app2
 
 
-def test_book_day():
+def test_login(mock_user):
     app = Application()
-    app.book_day('2021-01-04')
-    assert app.booked_days == ['2021-01-04']
-    app.book_day('2021-01-05')
-    assert app.booked_days == ['2021-01-04', '2021-01-05']
-    app.book_day('2021-01-04')
-    assert app.booked_days == ['2021-01-04', '2021-01-05']
-    app.book_day('2021-01-03')
-    assert app.booked_days == ['2021-01-03', '2021-01-04', '2021-01-05']
+    assert app.user is None
+    app.login(mock_user)
+    assert app.user.__str__() == 'John Doe <john.doe@udes.ca>'
+
+def test_logout(mock_user):
+    app = Application()
+    app.login(mock_user)
+    app.logout()
+    assert app.user is None
