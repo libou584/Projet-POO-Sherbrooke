@@ -15,8 +15,7 @@
 <body>
     {% if user %}
         <div class="user-info">
-            Logged in as {{ user.first_name }} {{ user.last_name }}<br>{{ user.email }}
-            <br>
+            Logged in as {{ user.first_name }} {{ user.last_name }}<br>
             <a href="{{ url_for('logout') }}">Log Out</a>
         </div>
     {% endif %}

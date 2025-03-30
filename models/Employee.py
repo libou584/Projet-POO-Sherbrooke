@@ -3,8 +3,8 @@ from models.User import User
 
 class Employee(User):
 
-    def __init__(self, id: int, first_name: str, last_name: str, email: str):
-        super().__init__(id, first_name, last_name, email)
+    def __init__(self, id: int, first_name: str, last_name: str, age: int):
+        super().__init__(id, first_name, last_name, age)
         self.__booked_days = []
 
     @property

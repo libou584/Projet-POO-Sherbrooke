@@ -14,14 +14,15 @@ app.secret_key = 'iozufe4hf6FSVgt6erg-some-secret-key'
 application = Application()
 # employee = Employee(0, 'John', 'Doe', 'john.doe@udes.ca')
 # application.login(employee)
+# application.repository.new_employee('John', 'Doe', 25)
 
 
 class BookingForm(FlaskForm):
-    date = DateField('Select a Date (format mm/dd/yyy)', format='%Y-%m-%d', validators=[DataRequired()])
+    date = DateField('Select a Date (format mm/dd/yyy)', format = '%Y-%m-%d', validators = [DataRequired()])
     submit = SubmitField('Book Day Off')
 
 
-@app.route('/', methods=['GET', 'POST'])
+@app.route('/', methods = ['GET', 'POST'])
 def index():
     if not application.user:
         return redirect(url_for('login'))
@@ -30,19 +31,17 @@ def index():
         date = form.date.data.strftime('%Y-%m-%d')
         application.user.book_day(date)
         return redirect(url_for('index'))
-    return render_template("pages/index.html", user=application.user, form=form, booked_days=application.user.booked_days)
+    return render_template("pages/index.html", user = application.user, form = form, booked_days = application.user.booked_days)
 
 
-@app.route('/login', methods=['GET', 'POST'])
-def login():
-    if request.method == 'POST':
-        first_name = request.form['first_name']
-        last_name = request.form['last_name']
-        email = request.form['email']
-        employee = Employee(0, first_name, last_name, email)
-        application.login(employee)
+@app.route('/login', methods=['GET'])
+@app.route('/login/<int:user_id>', methods=['GET'])
+def login(user_id = None):
+    if user_id is not None:
+        user = application.repository.get_user_by_id(user_id)
+        application.login(user)
         return redirect(url_for('index'))
-    return render_template("pages/login.html")
+    return render_template("pages/login.html", users = application.repository.get_all_users())
 
 
 @app.route('/logout')

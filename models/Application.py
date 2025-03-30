@@ -1,10 +1,13 @@
+from models.Repository import Repository
+
+
 class Application:
 
     __instance = None
 
     def __new_app(self):
         self.__logged_in_user = None
-        self.__database_handler = None
+        self.__repository = Repository()
 
     def __new__(cls):
         if cls.__instance is None:
@@ -16,6 +19,10 @@ class Application:
     @property
     def user(self):
         return self.__logged_in_user
+    
+    @property
+    def repository(self):
+        return self.__repository
     
     def login(self, user):
         self.__logged_in_user = user
