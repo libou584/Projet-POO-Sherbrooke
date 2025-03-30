@@ -5,9 +5,19 @@ from models.Employee import Employee
 
 class Repository:
 
-    def __init__(self):
-        self.__cx = sqlite3.connect('database.db', check_same_thread=False)
+    def __init__(self, db_name="database.db"):
+        self.__cx = sqlite3.connect(db_name, check_same_thread=False)
         self.__cu = self.__cx.cursor()
+        self._initialize_database()
+    
+    def _initialize_database(self):
+        self.__cu.execute('''
+            CREATE TABLE IF NOT EXISTS Users (id INT PRIMARY KEY, first_name TEXT, last_name TEXT, age INT, role TEXT);
+        ''')
+        self.__cu.execute('''
+            CREATE TABLE IF NOT EXISTS DaysOff (employee_id INT, day DATE, status TEXT);
+        ''')
+        self.__cx.commit()
     
     def __del__(self):
         self.__cx.close()
