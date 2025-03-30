@@ -5,4 +5,4 @@ from models.Employee import Employee
 
 @pytest.fixture
 def mock_user():
-    return Employee(0, 'John', 'Doe', 'john.doe@udes.ca')
+    return Employee(0, 'John', 'Doe', 25)

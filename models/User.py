@@ -3,14 +3,14 @@ from abc import ABC as AbstractClass
 
 class User(AbstractClass):
 
-    def __init__(self, id: int, first_name: str, last_name: str, email: str):
+    def __init__(self, id: int, first_name: str, last_name: str, age: int):
         self.__id = id
         self.__first_name = first_name
         self.__last_name = last_name
-        self.__email = email
+        self.__age = age
 
     def __str__(self):
-        return f"{self.__first_name} {self.__last_name} <{self.__email}>"
+        return f"{self.__first_name} {self.__last_name}"
 
     @property
     def id(self):
@@ -25,5 +25,5 @@ class User(AbstractClass):
         return self.__last_name
     
     @property
-    def email(self):
-        return self.__email
+    def age(self):
+        return self.__age

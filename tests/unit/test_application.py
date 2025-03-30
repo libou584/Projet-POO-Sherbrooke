@@ -13,7 +13,7 @@ def test_login(mock_user):
     app = Application()
     assert app.user is None
     app.login(mock_user)
-    assert app.user.__str__() == 'John Doe <john.doe@udes.ca>'
+    assert app.user.__str__() == 'John Doe'
 
 def test_logout(mock_user):
     app = Application()
