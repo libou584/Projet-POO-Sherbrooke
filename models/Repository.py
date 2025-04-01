@@ -16,8 +16,8 @@ class Repository:
         ''')
         self.__cx.commit()
         self.__cu.execute("SELECT * FROM Users")
-        if not self.__cu.fetchall():
-            self.new_employee('John', 'Doe', 25)
+        # if not self.__cu.fetchall():
+        #     self.new_employee('John', 'Doe', 25)
         self.__cu.execute('''
             CREATE TABLE IF NOT EXISTS DaysOff (employee_id INT, day DATE, status TEXT);
         ''')

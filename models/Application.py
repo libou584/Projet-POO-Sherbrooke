@@ -24,6 +24,10 @@ class Application:
     def repository(self):
         return self.__repository
     
+    @repository.setter
+    def repository(self, repository):
+        self.__repository = repository
+    
     def login(self, user):
         self.__logged_in_user = user
 
