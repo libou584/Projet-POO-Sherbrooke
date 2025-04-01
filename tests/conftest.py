@@ -48,5 +48,5 @@ def setup_database():
         os.remove(test_db)
 
 @pytest.fixture
-def repository(setup_database):
+def mock_repository(setup_database):
     return Repository(db_name=setup_database)
