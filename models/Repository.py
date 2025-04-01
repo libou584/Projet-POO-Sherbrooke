@@ -14,6 +14,10 @@ class Repository:
         self.__cu.execute('''
             CREATE TABLE IF NOT EXISTS Users (id INT PRIMARY KEY, first_name TEXT, last_name TEXT, age INT, role TEXT);
         ''')
+        self.__cx.commit()
+        self.__cu.execute("SELECT * FROM Users")
+        if not self.__cu.fetchall():
+            self.new_employee('John', 'Doe', 25)
         self.__cu.execute('''
             CREATE TABLE IF NOT EXISTS DaysOff (employee_id INT, day DATE, status TEXT);
         ''')
@@ -46,3 +50,16 @@ class Repository:
                 user = Employee(user[0], user[1], user[2], user[3])
             return user
         return None
+    
+    def add_booked_day(self, id: int, date: str)-> bool:
+        self.__cu.execute("SELECT COUNT(*) FROM DaysOff WHERE employee_id = ? AND day = ?", (id, date))
+        count = self.__cu.fetchone()[0]
+        if count == 0:
+            self.__cu.execute("INSERT INTO DaysOff (employee_id, day, status) VALUES (?, ?, ?)", (id, date, "waiting"))
+            self.__cx.commit()
+            return True
+        return False
+    
+    def get_booked_days(self, id: int):
+        self.__cu.execute("SELECT day, status FROM DaysOff WHERE employee_id = ? ORDER BY day", (id,))
+        return self.__cu.fetchall()

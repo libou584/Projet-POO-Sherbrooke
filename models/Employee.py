@@ -5,16 +5,16 @@ class Employee(User):
 
     def __init__(self, id: int, first_name: str, last_name: str, age: int):
         super().__init__(id, first_name, last_name, age)
-        self.__booked_days = []
+        self.__get_booked_days_from_database()
+    
+    def refresh(self):
+        self.__get_booked_days_from_database()
 
     @property
     def booked_days(self):
         return self.__booked_days
     
-    def book_day(self, date: str):
-        if date not in self.__booked_days:
-            self.__booked_days.append(date)
-            self.sort_dates()
-    
-    def sort_dates(self):
-        self.__booked_days.sort(key=lambda x: tuple(map(int, x.split('-'))))
+    def __get_booked_days_from_database(self):
+        from models.Application import Application
+        application = Application()
+        self.__booked_days = application.repository.get_booked_days(self.id)

@@ -12,9 +12,6 @@ app = Flask(__name__)
 app.secret_key = 'iozufe4hf6FSVgt6erg-some-secret-key'
 
 application = Application()
-# employee = Employee(0, 'John', 'Doe', 'john.doe@udes.ca')
-# application.login(employee)
-# application.repository.new_employee('John', 'Doe', 25)
 
 
 class BookingForm(FlaskForm):
@@ -29,7 +26,9 @@ def index():
     form = BookingForm()
     if form.validate_on_submit():
         date = form.date.data.strftime('%Y-%m-%d')
-        application.user.book_day(date)
+        res = application.repository.add_booked_day(application.user.id, date)
+        if res:
+            application.user.refresh()
         return redirect(url_for('index'))
     return render_template("pages/index.html", user = application.user, form = form, booked_days = application.user.booked_days)
 
