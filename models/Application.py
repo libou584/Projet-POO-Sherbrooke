@@ -1,4 +1,4 @@
-from models.Repository import Repository
+from models.Repositories.RepositoryFacade import RepositoryFacade
 from models.DayOffApproval.HRToApproveStrategy import HRToApproveStategy
 
 
@@ -8,7 +8,7 @@ class Application:
 
     def __new_app(self):
         self.__logged_in_user = None
-        self.__repository = Repository()
+        self.__repository_facade = RepositoryFacade()
         self.__day_off_approval_strategy = HRToApproveStategy()
 
     def __new__(cls):
@@ -23,16 +23,16 @@ class Application:
         return self.__logged_in_user
     
     @property
-    def repository(self):
-        return self.__repository
+    def repository_facade(self):
+        return self.__repository_facade
     
     @property
     def day_off_approval_strategy(self):
         return self.__day_off_approval_strategy
     
-    @repository.setter
-    def repository(self, repository):
-        self.__repository = repository
+    @repository_facade.setter
+    def repository_facade(self, repository_facade):
+        self.__repository_facade = repository_facade
 
     @day_off_approval_strategy.setter
     def day_off_approval_strategy(self, strategy):

@@ -17,4 +17,4 @@ class Employee(User):
     def __get_booked_days_from_database(self):
         from models.Application import Application
         application = Application()
-        self.__booked_days = application.repository.get_booked_days(self.id)
+        self.__booked_days = application.repository_facade.get_booked_days(self.id)
