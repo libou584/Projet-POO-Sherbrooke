@@ -63,3 +63,11 @@ class Repository:
     def get_booked_days(self, id: int):
         self.__cu.execute("SELECT day, status FROM DaysOff WHERE employee_id = ? ORDER BY day", (id,))
         return self.__cu.fetchall()
+    
+    def approve_day_off(self, id: int, date: str):
+        self.__cu.execute("UPDATE DaysOff SET status = 'approved' WHERE employee_id = ? AND day = ?", (id, date))
+        self.__cx.commit()
+    
+    def reject_day_off(self, id: int, date: str):
+        self.__cu.execute("UPDATE DaysOff SET status = 'rejected' WHERE employee_id = ? AND day = ?", (id, date))
+        self.__cx.commit()
