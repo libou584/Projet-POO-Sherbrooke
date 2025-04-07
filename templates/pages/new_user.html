@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html>
+{% extends "partials/base.html" %}
+{% block content %}
+<style>
+    .container {
+        max-width: 900px;
+        margin: 40px auto;
+        padding: 20px;
+        background-color: #ffffff;
+        border-radius: 8px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    h1 {
+        color: #2c3e50;
+        text-align: center;
+        margin-bottom: 30px;
+    }
+
+    .form-group {
+        margin-bottom: 20px;
+    }
+
+    label {
+        display: block;
+        margin-bottom: 5px;
+        color: #2c3e50;
+        font-weight: bold;
+    }
+
+    input, select {
+        width: 100%;
+        padding: 8px;
+        border: 1px solid #bdc3c7;
+        border-radius: 4px;
+        font-size: 16px;
+    }
+
+    input:focus, select:focus {
+        outline: none;
+        border-color: #3498db;
+    }
+
+    button {
+        width: 100%;
+        padding: 12px;
+        background-color: #3498db;
+        color: white;
+        border: none;
+        border-radius: 4px;
+        font-size: 16px;
+        cursor: pointer;
+        transition: background-color 0.3s;
+    }
+
+    button:hover {
+        background-color: #2980b9;
+    }
+
+    .back-link {
+        display: block;
+        margin-top: 20px;
+        text-align: center;
+        color: #7f8c8d;
+        text-decoration: none;
+    }
+
+    .back-link:hover {
+        color: #2c3e50;
+    }
+</style>
+<body>
+    <h1>Create New User</h1>
+    <form method="POST" action="{{ url_for('new_user') }}">
+        <div class="form-group">
+            <label for="first_name">First Name:</label>
+            <input type="text" id="first_name" name="first_name" required>
+        </div>
+        <div class="form-group">
+            <label for="last_name">Last Name:</label>
+            <input type="text" id="last_name" name="last_name" required>
+        </div>
+        <div class="form-group">
+            <label for="age">Age:</label>
+            <input type="number" id="age" name="age" required>
+        </div>
+        <div class="form-group">
+            <label for="role">Role:</label>
+            <select id="role" name="role" required>
+                <option value="employee">Employee</option>
+                <option value="hr">HR</option>
+            </select>
+        </div>
+        <button type="submit">Create User</button>
+    </form>
+    <a href="{{ url_for('login') }}" class="back-link">Back to Login</a>
+</body>
+{% endblock %}
+</html>
