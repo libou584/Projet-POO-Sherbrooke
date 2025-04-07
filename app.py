@@ -34,6 +34,22 @@ def index():
     return render_template("pages/index.html", user = application.user, form = form, booked_days = application.user.booked_days)
 
 
+@app.route('/new_user', methods=['GET', 'POST'])
+def new_user():
+    if request.method == 'POST':
+        first_name = request.form['first_name']
+        last_name = request.form['last_name']
+        age = request.form['age']
+        role = request.form['role']
+        if role == 'employee':
+            user_id = application.repository_facade.new_employee(first_name, last_name, age)
+        # elif role == 'hr':
+        #     user_id = application.repository_facade.new_hr(first_name, last_name, age)
+        application.login(application.repository_facade.get_user_by_id(user_id))
+        return redirect(url_for('index'))
+    return render_template("pages/new_user.html")
+
+
 @app.route('/login', methods=['GET'])
 @app.route('/login/<int:user_id>', methods=['GET'])
 def login(user_id = None):
