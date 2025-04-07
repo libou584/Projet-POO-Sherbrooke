@@ -1,5 +1,6 @@
 import pytest
 from models.Application import Application
+from models.DayOffApproval.HRToApproveStrategy import HRToApproveStategy
 
 
 def test_application_instance():
@@ -20,3 +21,8 @@ def test_logout(mock_user):
     app.login(mock_user)
     app.logout()
     assert app.user is None
+
+def test_strategy():
+    application = Application()
+    application.day_off_approval_strategy = HRToApproveStategy()
+    assert isinstance(application.day_off_approval_strategy, HRToApproveStategy)

@@ -3,7 +3,7 @@ import sqlite3
 import os
 
 from models.Employee import Employee
-from models.Repository import Repository
+from models.Repositories.RepositoryFacade import RepositoryFacade
 
 
 @pytest.fixture
@@ -48,5 +48,5 @@ def setup_database():
         os.remove(test_db)
 
 @pytest.fixture
-def mock_repository(setup_database):
-    return Repository(db_name=setup_database)
+def mock_repository_facade(setup_database):
+    return RepositoryFacade(db_name=setup_database)
