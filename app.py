@@ -41,7 +41,7 @@ def login(user_id = None):
         user = application.repository_facade.get_user_by_id(user_id)
         application.login(user)
         return redirect(url_for('index'))
-    return render_template("pages/login.html", users = application.repository.get_all_users())
+    return render_template("pages/login.html", users = application.repository_facade.get_all_users())
 
 
 @app.route('/logout')
