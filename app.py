@@ -28,6 +28,7 @@ def index():
         date = form.date.data.strftime('%Y-%m-%d')
         res = application.repository.add_booked_day(application.user.id, date)
         if res:
+            application.day_off_approval_strategy.approve(application.user.id, date)
             application.user.refresh()
         return redirect(url_for('index'))
     return render_template("pages/index.html", user = application.user, form = form, booked_days = application.user.booked_days)
