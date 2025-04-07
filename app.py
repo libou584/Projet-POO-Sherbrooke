@@ -26,7 +26,7 @@ def index():
     form = BookingForm()
     if form.validate_on_submit():
         date = form.date.data.strftime('%Y-%m-%d')
-        res = application.repository.add_booked_day(application.user.id, date)
+        res = application.repository_facade.add_booked_day(application.user.id, date)
         if res:
             application.day_off_approval_strategy.approve(application.user.id, date)
             application.user.refresh()
@@ -38,7 +38,7 @@ def index():
 @app.route('/login/<int:user_id>', methods=['GET'])
 def login(user_id = None):
     if user_id is not None:
-        user = application.repository.get_user_by_id(user_id)
+        user = application.repository_facade.get_user_by_id(user_id)
         application.login(user)
         return redirect(url_for('index'))
     return render_template("pages/login.html", users = application.repository.get_all_users())
