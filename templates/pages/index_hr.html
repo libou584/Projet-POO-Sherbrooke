@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html>
+{% extends "partials/base.html" %}
+{% block content %}
+<style>
+    .container {
+        max-width: 1200px;
+        margin: 40px auto;
+        padding: 20px;
+        background-color: #ffffff;
+        border-radius: 8px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        position: relative;
+    }
+
+    .user-info {
+        position: absolute;
+        top: 20px;
+        right: 20px;
+        padding: 10px;
+        font-size: 16px;
+        text-align: right;
+    }
+
+    .user-info a {
+        color: #3498db;
+        text-decoration: none;
+        margin-top: 5px;
+        display: inline-block;
+    }
+
+    .user-info a:hover {
+        color: #2980b9;
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 20px;
+    }
+    th, td {
+        padding: 10px;
+        border: 1px solid #ddd;
+        text-align: left;
+    }
+    th {
+        background-color: #f5f5f5;
+    }
+    .action-buttons {
+        display: flex;
+        gap: 10px;
+    }
+    .approve {
+        background-color: #4CAF50;
+        color: white;
+        border: none;
+        padding: 5px 10px;
+        cursor: pointer;
+    }
+    .reject {
+        background-color: #f44336;
+        color: white;
+        border: none;
+        padding: 5px 10px;
+        cursor: pointer;
+    }
+</style>
+<body>
+    {% if user %}
+        <div class="user-info">
+            Logged in as {{ user.first_name }} {{ user.last_name }}<br>
+            <a href="{{ url_for('logout') }}">Log Out</a>
+        </div>
+    {% endif %}
+    <h1>HR Dashboard - Day Off Requests</h1>
+    
+    <table>
+        <thead>
+            <tr>
+                <th>Employee Name</th>
+                <th>Date</th>
+                <th>Status</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for day in booked_days %}
+            <tr>
+                <td>{{ users[day[0]].first_name }} {{ users[day[0]].last_name }}</td>
+                <td>{{ day[1] }}</td>
+                <td>{{ day[2] }}</td>
+                <td class="action-buttons">
+                    <form action="{{ url_for('approve_day_off', user_id=day[0], date=day[1]) }}" method="POST">
+                        <input type="hidden" name="action" value="approve">
+                        <button type="submit" class="approve">Approve</button>
+                    </form>
+                    <form action="{{ url_for('approve_day_off', user_id=day[0], date=day[1]) }}" method="POST">
+                        <input type="hidden" name="action" value="reject">
+                        <button type="submit" class="reject">Reject</button>
+                    </form>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</body>
+{% endblock %}
+</html>
