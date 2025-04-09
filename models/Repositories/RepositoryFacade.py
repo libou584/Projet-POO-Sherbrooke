@@ -13,7 +13,10 @@ class RepositoryFacade:
         self.__days_off_repository.clear_table()
     
     def new_employee(self, first_name: str, last_name: str, age: int):
-        self.__user_repository.new_employee(first_name, last_name, age)
+        return self.__user_repository.new_employee(first_name, last_name, age)
+    
+    def new_hr(self, first_name: str, last_name: str, age: int):
+        return self.__user_repository.new_hr(first_name, last_name, age)
     
     def get_user_by_id(self, id: int):
         return self.__user_repository.get_by_id(id)
@@ -26,6 +29,9 @@ class RepositoryFacade:
     
     def get_booked_days(self, id: int):
         return self.__days_off_repository.get_booked_days(id)
+    
+    def get_all_booked_days(self):
+        return self.__days_off_repository.get_all_booked_days()
     
     def approve_day_off(self, id: int, date: str):
         self.__days_off_repository.approve_day_off(id, date)

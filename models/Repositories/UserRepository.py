@@ -1,5 +1,6 @@
 from models.Repositories.BaseRepository import BaseRepository
-from models.Employee import Employee
+from models.Users.Employee import Employee
+from models.Users.Hr import Hr
 
 
 class UserRepository(BaseRepository):
@@ -24,6 +25,14 @@ class UserRepository(BaseRepository):
         id = max_id + 1 if max_id is not None else 0
         self._cu.execute("INSERT INTO Users (id, first_name, last_name, age, role) VALUES (?, ?, ?, ?, ?)", (id, first_name, last_name, age, "employee"))
         self._cx.commit()
+        return id
+    
+    def new_hr(self, first_name: str, last_name: str, age: int):
+        max_id = self._cu.execute("SELECT MAX(id) FROM Users").fetchone()[0]
+        id = max_id + 1 if max_id is not None else 0
+        self._cu.execute("INSERT INTO Users (id, first_name, last_name, age, role) VALUES (?, ?, ?, ?, ?)", (id, first_name, last_name, age, "hr"))
+        self._cx.commit()
+        return id
     
     def get_by_id(self, id: int):
         self._cu.execute("SELECT * FROM Users WHERE id = ?", (id,))
@@ -31,6 +40,8 @@ class UserRepository(BaseRepository):
         if user:
             if user[4] == "employee":
                 user = Employee(user[0], user[1], user[2], user[3])
+            elif user[4] == "hr":
+                user = Hr(user[0], user[1], user[2], user[3])
             return user
         return None
 
@@ -40,6 +51,8 @@ class UserRepository(BaseRepository):
         for user in self._cu.fetchall():
             if user[4] == "employee":
                 users.append(Employee(user[0], user[1], user[2], user[3]))
+            elif user[4] == "hr":
+                users.append(Hr(user[0], user[1], user[2], user[3]))
             else:
-                users.append(user)
+                raise ValueError(f"Unknown role: {user[4]}")
         return users

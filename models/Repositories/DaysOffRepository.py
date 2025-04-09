@@ -30,6 +30,10 @@ class DaysOffRepository(BaseRepository):
         self._cu.execute("SELECT day, status FROM DaysOff WHERE employee_id = ? ORDER BY day", (id,))
         return self._cu.fetchall()
     
+    def get_all_booked_days(self):
+        self._cu.execute("SELECT * FROM DaysOff ORDER BY employee_id, day")
+        return self._cu.fetchall()
+    
     def approve_day_off(self, id: int, date: str):
         self._cu.execute("UPDATE DaysOff SET status = 'approved' WHERE employee_id = ? AND day = ?", (id, date))
         self._cx.commit()
