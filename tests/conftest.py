@@ -2,7 +2,7 @@ import pytest
 import sqlite3
 import os
 
-from models.Employee import Employee
+from models.Users.Employee import Employee
 from models.Repositories.RepositoryFacade import RepositoryFacade
 
 

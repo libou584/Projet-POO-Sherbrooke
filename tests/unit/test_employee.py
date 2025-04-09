@@ -1,4 +1,4 @@
-from models.Employee import Employee
+from models.Users.Employee import Employee
 from models.Application import Application
 
 
