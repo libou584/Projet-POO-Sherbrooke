@@ -49,16 +49,16 @@ def index_employee():
     return render_template("pages/index_employee.html", user = application.user, form = form, booked_days = application.user.booked_days)
 
 
-@app.route('/approve_day_off/<int:user_id>/<string:date>', methods=['POST'])
-def approve_day_off(user_id, date):
+@app.route('/approve_day_off/<int:employee_id>/<string:date>/<int:hr_id>', methods=['POST'])
+def approve_day_off(employee_id, date, hr_id):
     if not isinstance(application.user, Hr):
         return redirect(url_for('login'))
     
     action = request.form.get('action')
     if action == 'approve':
-        application.repository_facade.approve_day_off(user_id, date)
+        application.repository_facade.approve_day_off(employee_id, date, hr_id)
     elif action == 'reject':
-        application.repository_facade.reject_day_off(user_id, date)
+        application.repository_facade.reject_day_off(employee_id, date, hr_id)
     
     return redirect(url_for('index'))
 

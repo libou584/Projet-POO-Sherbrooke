@@ -53,6 +53,4 @@ class UserRepository(BaseRepository):
                 users.append(Employee(user[0], user[1], user[2], user[3]))
             elif user[4] == "hr":
                 users.append(Hr(user[0], user[1], user[2], user[3]))
-            else:
-                raise ValueError(f"Unknown role: {user[4]}")
         return users
