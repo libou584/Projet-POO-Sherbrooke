@@ -27,14 +27,17 @@ class RepositoryFacade:
     def add_booked_day(self, id: int, date: str) -> bool:
         return self.__days_off_repository.add_booked_day(id, date)
     
-    def get_booked_days(self, id: int):
-        return self.__days_off_repository.get_booked_days(id)
+    def get_booked_days_by_employee_id(self, id: int):
+        return self.__days_off_repository.get_booked_days_by_employee_id(id)
+
+    def get_booked_days_by_hr_id(self, id: int):
+        return self.__days_off_repository.get_booked_days_by_hr_id(id)
     
     def get_all_booked_days(self):
         return self.__days_off_repository.get_all_booked_days()
     
-    def approve_day_off(self, id: int, date: str):
-        self.__days_off_repository.approve_day_off(id, date)
+    def approve_day_off(self, id: int, date: str, hr_id: int):
+        self.__days_off_repository.approve_day_off(id, date, hr_id)
 
-    def reject_day_off(self, id: int, date: str):
-        self.__days_off_repository.reject_day_off(id, date)
+    def reject_day_off(self, id: int, date: str, hr_id: int):
+        self.__days_off_repository.reject_day_off(id, date, hr_id)
