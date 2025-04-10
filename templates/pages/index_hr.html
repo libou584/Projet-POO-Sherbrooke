@@ -38,18 +38,22 @@
         border-collapse: collapse;
         margin-top: 20px;
     }
+
     th, td {
         padding: 10px;
         border: 1px solid #ddd;
         text-align: left;
     }
+
     th {
         background-color: #f5f5f5;
     }
+
     .action-buttons {
         display: flex;
         gap: 10px;
     }
+
     .approve {
         background-color: #4CAF50;
         color: white;
@@ -57,12 +61,17 @@
         padding: 5px 10px;
         cursor: pointer;
     }
+
     .reject {
         background-color: #f44336;
         color: white;
         border: none;
         padding: 5px 10px;
         cursor: pointer;
+    }
+
+    .invisible {
+        visibility: hidden;
     }
 </style>
 <body>
@@ -90,13 +99,13 @@
                 <td>{{ day[1] }}</td>
                 <td>{{ day[2] }}</td>
                 <td class="action-buttons">
-                    <form action="{{ url_for('approve_day_off', user_id=day[0], date=day[1]) }}" method="POST">
+                    <form action="{{ url_for('approve_day_off', employee_id=day[0], date=day[1], hr_id=user.id) }}" method="POST">
                         <input type="hidden" name="action" value="approve">
-                        <button type="submit" class="approve">Approve</button>
+                        <button type="submit" class="approve {{ 'invisible' if day[2] == 'approved' }}">Approve</button>
                     </form>
-                    <form action="{{ url_for('approve_day_off', user_id=day[0], date=day[1]) }}" method="POST">
+                    <form action="{{ url_for('approve_day_off', employee_id=day[0], date=day[1], hr_id=user.id) }}" method="POST">
                         <input type="hidden" name="action" value="reject">
-                        <button type="submit" class="reject">Reject</button>
+                        <button type="submit" class="reject {{ 'invisible' if day[2] == 'rejected' }}">Reject</button>
                     </form>
                 </td>
             </tr>

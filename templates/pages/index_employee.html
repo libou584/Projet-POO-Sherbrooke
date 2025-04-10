@@ -95,7 +95,18 @@
         background-color: #f8f9fa;
         border-radius: 4px;
         color: #2c3e50;
-        border-left: 4px solid #3498db;
+    }
+
+    li.waiting {
+        border-left: 4px solid #3498db;  /* Blue */
+    }
+
+    li.approved {
+        border-left: 4px solid #4CAF50;  /* Green */
+    }
+
+    li.rejected {
+        border-left: 4px solid #f44336;  /* Red */
     }
 </style>
 <body>
@@ -115,7 +126,7 @@
     <h2>Booked Days</h2>
     <ul>
         {% for day in booked_days %}
-            <li>{{ day[0] }}, {{ day[1] }}</li>
+            <li class="{{ day[1] }}">{{ day[0] }}, {{ day[1] }}</li>
         {% endfor %}
     </ul>
 </body>
