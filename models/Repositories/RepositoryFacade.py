@@ -23,6 +23,9 @@ class RepositoryFacade:
     
     def get_all_users(self):
         return self.__user_repository.get_all_users()
+    
+    def get_all_employees(self):
+        return self.__user_repository.get_all_employees()
 
     def add_booked_day(self, id: int, date: str) -> bool:
         return self.__days_off_repository.add_booked_day(id, date)

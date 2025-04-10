@@ -20,23 +20,35 @@ class BookingForm(FlaskForm):
     submit = SubmitField('Book Day Off')
 
 
-@app.route('/', methods = ['GET', 'POST'])
+@app.route('/', methods = ['GET'])
 def index():
     if not application.user:
         return redirect(url_for('login'))
     if isinstance(application.user, Employee):
-        return index_employee()
+        return redirect(url_for('index_employee'))
     if isinstance(application.user, Hr):
-        print("here")
-        return index_hr()
+        return redirect(url_for('index_hr'))
     return redirect(url_for('login'))
 
 
+@app.route('/index_hr', methods = ['GET'])
 def index_hr():
+    selected_employee = request.args.get('employee_id')
     booked_days = application.repository_facade.get_all_booked_days()
-    return render_template("pages/index_hr.html", booked_days=booked_days, users=application.repository_facade.get_all_users(), user = application.user)
+    
+    if selected_employee and selected_employee != 'all':
+        booked_days = [day for day in booked_days if str(day[0]) == selected_employee]
+    
+    return render_template(
+        "pages/index_hr.html",
+        booked_days=booked_days,
+        users=application.repository_facade.get_all_employees(),
+        user=application.user,
+        selected_employee=selected_employee
+    )
 
 
+@app.route('/index_employee', methods = ['GET', 'POST'])
 def index_employee():
     form = BookingForm()
     if form.validate_on_submit():

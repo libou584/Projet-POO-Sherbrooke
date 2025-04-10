@@ -54,3 +54,10 @@ class UserRepository(BaseRepository):
             elif user[4] == "hr":
                 users.append(Hr(user[0], user[1], user[2], user[3]))
         return users
+    
+    def get_all_employees(self):
+        self._cu.execute("SELECT * FROM Users WHERE role = 'employee'")
+        users = []
+        for user in self._cu.fetchall():
+            users.append(Employee(user[0], user[1], user[2], user[3]))
+        return users
