@@ -31,23 +31,6 @@ def index():
     return redirect(url_for('login'))
 
 
-@app.route('/index_hr', methods = ['GET'])
-def index_hr():
-    selected_employee = request.args.get('employee_id')
-    booked_days = application.repository_facade.get_all_booked_days()
-    
-    if selected_employee and selected_employee != 'all':
-        booked_days = [day for day in booked_days if str(day[0]) == selected_employee]
-    
-    return render_template(
-        "pages/index_hr.html",
-        booked_days=booked_days,
-        users=application.repository_facade.get_all_employees(),
-        user=application.user,
-        selected_employee=selected_employee
-    )
-
-
 @app.route('/index_employee', methods = ['GET', 'POST'])
 def index_employee():
     form = BookingForm()
@@ -61,6 +44,28 @@ def index_employee():
     return render_template("pages/index_employee.html", user = application.user, form = form, booked_days = application.user.booked_days)
 
 
+@app.route('/index_hr', methods = ['GET'])
+def index_hr():
+    if not isinstance(application.user, Hr):
+        return redirect(url_for('login'))
+    
+    employees = application.repository_facade.get_all_employees()
+    return render_template("pages/index_hr.html", user = application.user, employees = employees)
+
+
+@app.route('/hr_dashboard/<int:employee_id>', methods = ['GET'])
+def hr_dashboard(employee_id):
+    employee = application.repository_facade.get_user_by_id(employee_id)
+    booked_days = application.repository_facade.get_booked_days_by_employee_id(employee_id)
+    
+    return render_template(
+        "pages/hr_dashboard.html",
+        booked_days = booked_days,
+        user = application.user,
+        employee = employee,
+    )
+
+
 @app.route('/approve_day_off/<int:employee_id>/<string:date>/<int:hr_id>', methods=['POST'])
 def approve_day_off(employee_id, date, hr_id):
     if not isinstance(application.user, Hr):
@@ -72,7 +77,7 @@ def approve_day_off(employee_id, date, hr_id):
     elif action == 'reject':
         application.repository_facade.reject_day_off(employee_id, date, hr_id)
     
-    return redirect(url_for('index'))
+    return redirect(url_for('hr_dashboard', employee_id = employee_id))
 
 
 @app.route('/new_user', methods=['GET', 'POST'])
@@ -92,12 +97,11 @@ def new_user():
     return render_template("pages/new_user.html")
 
 
-@app.route('/login', methods=['GET'])
-@app.route('/login/<int:user_id>', methods=['GET'])
+@app.route('/login', methods = ['GET'])
+@app.route('/login/<int:user_id>', methods = ['GET'])
 def login(user_id = None):
     if user_id is not None:
         user = application.repository_facade.get_user_by_id(user_id)
-        print(user_id)
         application.login(user)
         return redirect(url_for('index'))
     return render_template("pages/login.html", users = application.repository_facade.get_all_users())
@@ -110,4 +114,4 @@ def logout():
 
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(debug = True)

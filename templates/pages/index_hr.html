@@ -4,7 +4,7 @@
 {% block content %}
 <style>
     .container {
-        max-width: 1200px;
+        max-width: 800px;
         margin: 40px auto;
         padding: 20px;
         background-color: #ffffff;
@@ -33,77 +33,54 @@
         color: #2980b9;
     }
 
-    table {
-        width: 100%;
-        border-collapse: collapse;
-        margin-top: 20px;
-    }
-
-    th, td {
-        padding: 10px;
-        border: 1px solid #ddd;
-        text-align: left;
-    }
-
-    th {
-        background-color: #f5f5f5;
-    }
-
-    .action-buttons {
+    .user-list {
         display: flex;
+        flex-direction: column;
         gap: 10px;
     }
 
-    .approve, .reject {
-        background-color: #ffffff;
-        color: #333333;
-        border: 1px solid #ddd;
-        padding: 5px 10px;
-        cursor: pointer;
+    .user-link {
+        padding: 12px;
+        background-color: #3498db;
+        color: white;
+        text-decoration: none;
         border-radius: 4px;
+        transition: background-color 0.3s;
     }
 
-    .approve:hover {
-        background-color: #f0f0f0;
+    .user-link:hover {
+        background-color: #2980b9;
+        color: white;
     }
 
-    .reject:hover {
-        background-color: #f0f0f0;
+    h1, h2 {
+        color: #2c3e50;
+        margin-bottom: 30px;
     }
 
-    .status-approved {
-        background-color: #e6ffe6;
-        color: #2e7d32;
+    h1 {
+        text-align: center;
+        padding-top: 20px;
     }
 
-    .status-waiting {
-        background-color: #e3f2fd;
-        color: #1565c0;
-    }
-
-    .status-rejected {
-        background-color: #ffebee;
-        color: #c62828;
-    }
-
-    .invisible {
-        visibility: hidden;
-    }
-
-    .filter-section {
-        margin: 20px 0;
-    }
-
-    .filter-section select {
-        padding: 8px;
-        border-radius: 4px;
-        border: 1px solid #ddd;
-        min-width: 200px;
-    }
-
-    .filter-section label {
-        margin-right: 10px;
+    label {
+        display: block;
+        margin-bottom: 5px;
+        color: #2c3e50;
         font-weight: bold;
+    }
+
+    ul {
+        list-style: none;
+        padding: 0;
+    }
+
+    li {
+        padding: 12px;
+        margin-bottom: 8px;
+        background-color: #f8f9fa;
+        border-radius: 4px;
+        color: #2c3e50;
     }
 </style>
 <body>
@@ -113,53 +90,17 @@
             <a href="{{ url_for('logout') }}">Log Out</a>
         </div>
     {% endif %}
-    <h1>HR Dashboard - Day Off Requests</h1>
 
-    <div class="filter-section">
-        <form action="{{ url_for('index_hr') }}" method="GET">
-            <label for="employee_id">Filter by Employee:</label>
-            <select name="employee_id" id="employee_id" onchange="this.form.submit()">
-                <option value="all" {% if not selected_employee %}selected{% endif %}>All Employees</option>
-                {% for emp in users %}
-                    {% if emp.id != user.id %}
-                        <option value="{{ emp.id }}" {% if selected_employee == emp.id|string %}selected{% endif %}>
-                            {{ emp.first_name }} {{ emp.last_name }}
-                        </option>
-                    {% endif %}
-                {% endfor %}
-            </select>
-        </form>
+    <h1>HR Dashboard</h1>
+
+    <h2>Employees</h2>
+    <div class="user-list">
+        {% for employee in employees %}
+            <a href="{{ url_for('hr_dashboard', employee_id=employee.id) }}" class="user-link">
+                {{ employee.first_name }} {{ employee.last_name }}
+            </a>
+        {% endfor %}
     </div>
-    
-    <table>
-        <thead>
-            <tr>
-                <th>Employee Name</th>
-                <th>Date</th>
-                <th>Status</th>
-                <th>Actions</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for day in booked_days %}
-                <tr>
-                    <td>{{ users[day[0]].first_name }} {{ users[day[0]].last_name }}</td>
-                    <td>{{ day[1] }}</td>
-                    <td class="status-{{ day[2] }}">{{ day[2] }}</td>
-                    <td class="action-buttons">
-                        <form action="{{ url_for('approve_day_off', employee_id=day[0], date=day[1], hr_id=user.id) }}" method="POST">
-                            <input type="hidden" name="action" value="approve">
-                            <button type="submit" class="approve {{ 'invisible' if day[2] == 'approved' }}">Approve</button>
-                        </form>
-                        <form action="{{ url_for('approve_day_off', employee_id=day[0], date=day[1], hr_id=user.id) }}" method="POST">
-                            <input type="hidden" name="action" value="reject">
-                            <button type="submit" class="reject {{ 'invisible' if day[2] == 'rejected' }}">Reject</button>
-                        </form>
-                    </td>
-                </tr>
-            {% endfor %}
-        </tbody>
-    </table>
 </body>
 {% endblock %}
 </html>
