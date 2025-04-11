@@ -1,5 +1,6 @@
 from models.Repositories.UserRepository import UserRepository
 from models.Repositories.DaysOffRepository import DaysOffRepository
+from models.Repositories.NotificationRepository import NotificationRepository
 
 
 class RepositoryFacade:
@@ -7,10 +8,12 @@ class RepositoryFacade:
     def __init__(self, db_name="database.db"):
         self.__user_repository = UserRepository(db_name)
         self.__days_off_repository = DaysOffRepository(db_name)
+        self.__notification_repository = NotificationRepository(db_name)
     
     def clear_tables(self):
         self.__user_repository.clear_table()
         self.__days_off_repository.clear_table()
+        self.__notification_repository.clear_table()
     
     def new_employee(self, first_name: str, last_name: str, age: int):
         return self.__user_repository.new_employee(first_name, last_name, age)
@@ -44,3 +47,9 @@ class RepositoryFacade:
 
     def reject_day_off(self, id: int, date: str, hr_id: int):
         self.__days_off_repository.reject_day_off(id, date, hr_id)
+    
+    def send_employee_notification(self, user_id: int, message: str):
+        self.__notification_repository.send_employee_notification(user_id, message)
+    
+    def send_hr_notification(self, message: str):
+        self.__notification_repository.send_hr_notification(message)

@@ -10,6 +10,7 @@ class Application:
         self.__logged_in_user = None
         self.__repository_facade = RepositoryFacade()
         self.__day_off_approval_strategy = HRToApproveStategy()
+        self.__observers = []
 
     def __new__(cls):
         if cls.__instance is None:
@@ -43,3 +44,15 @@ class Application:
 
     def logout(self):
         self.__logged_in_user = None
+    
+    def register_observer(self, observer):
+        if observer not in self.__observers:
+            self.__observers.append(observer)
+
+    def remove_observer(self, observer):
+        if observer in self.__observers:
+            self.__observers.remove(observer)
+    
+    def notify_observers(self, notification_type: str, user_id: int, message: str):
+        for observer in self.__observers:
+            observer.update(notification_type, user_id, message)

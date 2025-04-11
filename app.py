@@ -7,12 +7,16 @@ from wtforms.validators import DataRequired
 from models.Application import Application
 from models.Users.Employee import Employee
 from models.Users.Hr import Hr
+from models.Observers.EmployeeNotificationObserver import EmployeeNotificationObserver
+from models.Observers.HrNotificationObserver import HrNotificationObserver
 
 
 app = Flask(__name__)
 app.secret_key = 'iozufe4hf6FSVgt6erg-some-secret-key'
 
 application = Application()
+HrNotificationObserver(application)
+EmployeeNotificationObserver(application)
 
 
 class BookingForm(FlaskForm):
@@ -67,15 +71,17 @@ def hr_dashboard(employee_id):
 
 
 @app.route('/approve_day_off/<int:employee_id>/<string:date>/<int:hr_id>', methods=['POST'])
-def approve_day_off(employee_id, date, hr_id):
+def approve_day_off(employee_id: int, date: str, hr_id: int):
     if not isinstance(application.user, Hr):
         return redirect(url_for('login'))
     
     action = request.form.get('action')
     if action == 'approve':
         application.repository_facade.approve_day_off(employee_id, date, hr_id)
+        application.notify_observers("employee", employee_id, f"Your day off on {date} has been approved by {application.user.first_name} {application.user.last_name}.")
     elif action == 'reject':
         application.repository_facade.reject_day_off(employee_id, date, hr_id)
+        application.notify_observers("employee", employee_id, f"Your day off on {date} has been rejected by {application.user.first_name} {application.user.last_name}.")
     
     return redirect(url_for('hr_dashboard', employee_id = employee_id))
 
