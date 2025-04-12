@@ -34,3 +34,18 @@ def test_book_day(mock_repository_facade):
     employee.refresh()
     assert employee.booked_days == [('2020-01-01', 'waiting', -1), ('2020-01-02', 'waiting', -1), ('2020-01-03', 'waiting', -1)]
     application.repository_facade.clear_tables()
+
+
+def test_get_all_employees(mock_repository_facade):
+    mock_repository_facade.clear_tables()
+    application = Application()
+    application.repository_facade = mock_repository_facade
+    application.repository_facade.new_employee('John', 'Doe', 25)
+    application.repository_facade.new_employee('Jane', 'Smith', 30)
+    employees = application.repository_facade.get_all_employees()
+    assert len(employees) == 2
+    assert employees[0].first_name == 'John'
+    assert employees[1].first_name == 'Jane'
+    assert employees[0].last_name == 'Doe'
+    assert employees[1].last_name == 'Smith'
+    application.repository_facade.clear_tables()

@@ -31,6 +31,10 @@ class Application:
     def day_off_approval_strategy(self):
         return self.__day_off_approval_strategy
     
+    @property
+    def observers(self):
+        return self.__observers
+    
     @repository_facade.setter
     def repository_facade(self, repository_facade):
         self.__repository_facade = repository_facade

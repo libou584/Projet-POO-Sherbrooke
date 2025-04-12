@@ -53,3 +53,6 @@ class RepositoryFacade:
     
     def send_hr_notification(self, message: str):
         self.__notification_repository.send_hr_notification(message)
+    
+    def get_all_notifications(self):
+        return self.__notification_repository.get_all_notifications()
