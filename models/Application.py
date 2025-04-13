@@ -43,6 +43,9 @@ class Application:
     def day_off_approval_strategy(self, strategy):
         self.__day_off_approval_strategy = strategy
     
+    def approve_day_off(self, employee_id: int, date: str):
+        self.__day_off_approval_strategy.approve(employee_id, date)
+    
     def login(self, user):
         self.__logged_in_user = user
 
