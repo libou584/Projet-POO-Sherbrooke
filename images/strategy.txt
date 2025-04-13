@@ -1,0 +1,23 @@
+@startuml
+
+class Application {
+  - strategy
+  + setStrategy(strategy)
+  + approve_day_off(employee_id, date)
+  
+}
+
+interface DayOffApprovalStrategy {
+  + approve(employee_id, date)
+}
+
+class ApproveAllStrategy
+class HRToApproveStrategy
+
+
+Application o-right-> DayOffApprovalStrategy
+
+DayOffApprovalStrategy <|.. ApproveAllStrategy
+DayOffApprovalStrategy <|.. HRToApproveStrategy
+
+@enduml

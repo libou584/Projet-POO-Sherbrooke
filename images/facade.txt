@@ -1,0 +1,42 @@
+@startuml
+
+class Application {
+  - repository_facade
+  
+}
+
+class RepositoryFacade {
+  ...
+  + RepositoryFacade()
+}
+
+abstract class BaseRepository
+
+class UserRepository{
+  + new_employee()
+  + new_hr()
+}
+
+class DaysOffRepository{
+  + add_booked_day()
+  + get_all_booked_days()
+}
+
+class NotificationRepository {
+  + send_employee_notification()
+}
+
+
+Application o-right-> RepositoryFacade
+
+RepositoryFacade ..> UserRepository
+RepositoryFacade ..> DaysOffRepository
+RepositoryFacade ..> NotificationRepository
+
+BaseRepository <-- UserRepository
+BaseRepository <-- DaysOffRepository
+BaseRepository <-- NotificationRepository
+
+RepositoryFacade -right[hidden]- BaseRepository
+
+@enduml

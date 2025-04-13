@@ -1,0 +1,28 @@
+@startuml
+
+class Application {
+  - observers
+  + register_observer()
+  + remove_observer()
+  + notify_observers()
+}
+
+interface Observer{
+  + update()
+}
+
+class EmployeeNotificationObserver {
+  - send_notification()
+}
+
+class HrNotificationObserver {
+  - send_notification()
+}
+
+
+Application o-right-> Observer
+
+Observer <|.. EmployeeNotificationObserver
+Observer <|.. HrNotificationObserver
+
+@enduml
