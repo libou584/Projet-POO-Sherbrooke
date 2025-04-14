@@ -10,6 +10,7 @@ from models.Users.Hr import Hr
 from models.Observers.EmployeeNotificationObserver import EmployeeNotificationObserver
 from models.Observers.HrNotificationObserver import HrNotificationObserver
 from models.ReportGenerator.ReportFactoryProvider import ReportFactoryProvider
+from models.DayOffApproval.ApprovalStrategyProvider import ApprovalStrategyProvider
 
 
 app = Flask(__name__)
@@ -49,13 +50,17 @@ def index_employee():
     return render_template("pages/index_employee.html", user = application.user, form = form, booked_days = application.user.booked_days)
 
 
-@app.route('/index_hr', methods = ['GET'])
+@app.route('/index_hr', methods=['GET', 'POST'])
 def index_hr():
     if not isinstance(application.user, Hr):
         return redirect(url_for('login'))
     
+    if request.method == 'POST':
+        strategy = request.form.get('strategy')
+        application.day_off_approval_strategy = ApprovalStrategyProvider.get_approval_strategy(strategy)
+    
     employees = application.repository_facade.get_all_employees()
-    return render_template("pages/index_hr.html", user = application.user, employees = employees)
+    return render_template("pages/index_hr.html", user=application.user, employees=employees, current_strategy=application.day_off_approval_strategy)
 
 
 @app.route('/hr_dashboard/<int:employee_id>', methods = ['GET'])

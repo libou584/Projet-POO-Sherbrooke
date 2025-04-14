@@ -82,6 +82,33 @@
         border-radius: 4px;
         color: #2c3e50;
     }
+
+    .strategy-selector {
+        margin: 20px 0;
+        padding: 15px;
+        background-color: #f8f9fa;
+        border-radius: 4px;
+    }
+
+    .strategy-select {
+        padding: 8px;
+        border-radius: 4px;
+        border: 1px solid #ddd;
+        margin-right: 10px;
+    }
+
+    .strategy-button {
+        padding: 8px 16px;
+        background-color: #3498db;
+        color: white;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+    }
+
+    .strategy-button:hover {
+        background-color: #2980b9;
+    }
 </style>
 <body>
     {% if user %}
@@ -92,6 +119,17 @@
     {% endif %}
 
     <h1>HR Dashboard</h1>
+
+    <div class="strategy-selector">
+        <h3>Approval Strategy</h3>
+        <form action="{{ url_for('index_hr') }}" method="POST">
+            <select name="strategy" class="strategy-select">
+                <option value="HRToApprove" {% if current_strategy is not none and current_strategy.__class__.__name__ == 'HRToApproveStategy' %}selected{% endif %}>HR Approval Required</option>
+                <option value="ApproveAll" {% if current_strategy is not none and current_strategy.__class__.__name__ == 'ApproveAllStrategy' %}selected{% endif %}>Auto-Approve All</option>
+            </select>
+            <button type="submit" class="strategy-button">Set Strategy</button>
+        </form>
+    </div>
 
     <h2>Employees</h2>
     <div class="user-list">
