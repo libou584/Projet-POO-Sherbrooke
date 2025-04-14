@@ -4,7 +4,7 @@
 {% block content %}
 <style>
     .container {
-        max-width: 1200px;
+        max-width: 900px;
         margin: 40px auto;
         padding: 20px;
         background-color: #ffffff;
@@ -125,12 +125,11 @@
             <a href="{{ url_for('logout') }}">Log Out</a>
         </div>
     {% endif %}
-    <h1>HR Dashboard - Day Off Requests</h1>
+    <h1>HR Dashboard - {{ employee.first_name }} {{ employee.last_name }}</h1>
     
     <table>
         <thead>
             <tr>
-                <th>Employee Name</th>
                 <th>Date</th>
                 <th>Status</th>
                 <th>Actions</th>
@@ -139,7 +138,6 @@
         <tbody>
             {% for day in booked_days %}
                 <tr>
-                    <td>{{ employee.first_name }} {{ employee.last_name }}</td>
                     <td>{{ day[0] }}</td>
                     <td class="status-{{ day[1] }}">{{ day[1] }}</td>
                     <td class="action-buttons">
@@ -156,6 +154,10 @@
             {% endfor %}
         </tbody>
     </table>
+    <div style="margin-top: 20px; text-align: center;">
+        <a href="{{ url_for('report', report_type='pdf', employee_id=employee.id) }}" style="padding: 10px 20px; background-color: #2196F3; color: white; text-decoration: none; border-radius: 4px;">Generate PDF Report</a>
+        <a href="{{ url_for('report', report_type='html', employee_id=employee.id) }}" style="padding: 10px 20px; background-color: #4CAF50; color: white; text-decoration: none; border-radius: 4px; margin-right: 10px;">Generate HTML Report</a>
+    </div>
     <a href="{{ url_for('index_hr') }}" class="back-link">Back</a>
 </body>
 {% endblock %}

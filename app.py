@@ -9,6 +9,7 @@ from models.Users.Employee import Employee
 from models.Users.Hr import Hr
 from models.Observers.EmployeeNotificationObserver import EmployeeNotificationObserver
 from models.Observers.HrNotificationObserver import HrNotificationObserver
+from models.ReportGenerator.ReportFactoryProvider import ReportFactoryProvider
 
 
 app = Flask(__name__)
@@ -82,6 +83,16 @@ def approve_day_off(employee_id: int, date: str, hr_id: int):
     elif action == 'reject':
         application.repository_facade.reject_day_off(employee_id, date, hr_id)
         application.notify_observers("employee", employee_id, f"Your day off on {date} has been rejected by {application.user.first_name} {application.user.last_name}.")
+    
+    return redirect(url_for('hr_dashboard', employee_id = employee_id))
+
+
+@app.route('/report/<string:report_type>/<int:employee_id>', methods=['GET'])
+def report(report_type: str, employee_id: int):
+    if not isinstance(application.user, Hr):
+        return redirect(url_for('login'))
+    
+    ReportFactoryProvider.get_report_factory(report_type).create_report(employee_id)
     
     return redirect(url_for('hr_dashboard', employee_id = employee_id))
 
