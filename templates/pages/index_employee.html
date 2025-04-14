@@ -112,18 +112,19 @@
 <body>
     {% if user %}
         <div class="user-info">
-            Logged in as {{ user.first_name }} {{ user.last_name }}<br>
-            <a href="{{ url_for('logout') }}">Log Out</a>
+            Connecté en tant que<br>
+            {{ user.first_name }} {{ user.last_name }}<br>
+            <a href="{{ url_for('logout') }}">Se déconnecter</a>
         </div>
     {% endif %}
-    <h1>Book a Day Off</h1>
+    <h1>Demander un jour de congé</h1>
     <form method="POST">
         {{ form.hidden_tag() }}
         {{ form.date.label }} {{ form.date() }}
         {{ form.submit() }}
     </form>
 
-    <h2>Booked Days</h2>
+    <h2>Jours de congé demandés</h2>
     <ul>
         {% for day in booked_days %}
             <li class="{{ day[1] }}">{{ day[0] }}, {{ day[1] }}</li>

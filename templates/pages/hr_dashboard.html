@@ -121,11 +121,13 @@
 <body>
     {% if user %}
         <div class="user-info">
-            Logged in as {{ user.first_name }} {{ user.last_name }}<br>
-            <a href="{{ url_for('logout') }}">Log Out</a>
+            Connecté en tant que<br>
+            {{ user.first_name }} {{ user.last_name }}<br>
+            <a href="{{ url_for('logout') }}">Se déconnecter</a>
         </div>
     {% endif %}
-    <h1>HR Dashboard - {{ employee.first_name }} {{ employee.last_name }}</h1>
+    <h1>Jours de congé demandés par<br>
+        {{ employee.first_name }} {{ employee.last_name }}</h1>
     
     <table>
         <thead>
@@ -143,11 +145,11 @@
                     <td class="action-buttons">
                         <form action="{{ url_for('approve_day_off', employee_id=employee.id, date=day[0], hr_id=user.id) }}" method="POST">
                             <input type="hidden" name="action" value="approve">
-                            <button type="submit" class="approve {{ 'invisible' if day[1] == 'approved' }}">Approve</button>
+                            <button type="submit" class="approve {{ 'invisible' if day[1] == 'approved' }}">Accepter</button>
                         </form>
                         <form action="{{ url_for('approve_day_off', employee_id=employee.id, date=day[0], hr_id=user.id) }}" method="POST">
                             <input type="hidden" name="action" value="reject">
-                            <button type="submit" class="reject {{ 'invisible' if day[1] == 'rejected' }}">Reject</button>
+                            <button type="submit" class="reject {{ 'invisible' if day[1] == 'rejected' }}">Refuser</button>
                         </form>
                     </td>
                 </tr>
@@ -155,10 +157,10 @@
         </tbody>
     </table>
     <div style="margin-top: 20px; text-align: center;">
-        <a href="{{ url_for('report', report_type='pdf', employee_id=employee.id) }}" style="padding: 10px 20px; background-color: #2196F3; color: white; text-decoration: none; border-radius: 4px;">Generate PDF Report</a>
-        <a href="{{ url_for('report', report_type='html', employee_id=employee.id) }}" style="padding: 10px 20px; background-color: #4CAF50; color: white; text-decoration: none; border-radius: 4px; margin-right: 10px;">Generate HTML Report</a>
+        <a href="{{ url_for('report', report_type='pdf', employee_id=employee.id) }}" style="padding: 10px 20px; background-color: #2196F3; color: white; text-decoration: none; border-radius: 4px;">Générer le rapport en PDF</a>
+        <a href="{{ url_for('report', report_type='html', employee_id=employee.id) }}" style="padding: 10px 20px; background-color: #4CAF50; color: white; text-decoration: none; border-radius: 4px; margin-right: 10px;">Générer le rapport en HTML</a>
     </div>
-    <a href="{{ url_for('index_hr') }}" class="back-link">Back</a>
+    <a href="{{ url_for('index_hr') }}" class="back-link">Retour</a>
 </body>
 {% endblock %}
 </html>

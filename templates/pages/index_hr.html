@@ -4,7 +4,7 @@
 {% block content %}
 <style>
     .container {
-        max-width: 800px;
+        max-width: 900px;
         margin: 40px auto;
         padding: 20px;
         background-color: #ffffff;
@@ -113,25 +113,26 @@
 <body>
     {% if user %}
         <div class="user-info">
-            Logged in as {{ user.first_name }} {{ user.last_name }}<br>
-            <a href="{{ url_for('logout') }}">Log Out</a>
+            Connecté en tant que<br>
+            {{ user.first_name }} {{ user.last_name }}<br>
+            <a href="{{ url_for('logout') }}">Se déconnecter</a>
         </div>
     {% endif %}
 
-    <h1>HR Dashboard</h1>
+    <h1>Tableau de bord RH</h1>
 
     <div class="strategy-selector">
-        <h3>Approval Strategy</h3>
+        <h3>Stratégie d'approbation des jours de congé</h3>
         <form action="{{ url_for('index_hr') }}" method="POST">
             <select name="strategy" class="strategy-select">
-                <option value="HRToApprove" {% if current_strategy is not none and current_strategy.__class__.__name__ == 'HRToApproveStategy' %}selected{% endif %}>HR Approval Required</option>
-                <option value="ApproveAll" {% if current_strategy is not none and current_strategy.__class__.__name__ == 'ApproveAllStrategy' %}selected{% endif %}>Auto-Approve All</option>
+                <option value="HRToApprove" {% if current_strategy is not none and current_strategy.__class__.__name__ == 'HRToApproveStategy' %}selected{% endif %}>Approbation des RH requise</option>
+                <option value="ApproveAll" {% if current_strategy is not none and current_strategy.__class__.__name__ == 'ApproveAllStrategy' %}selected{% endif %}>Tout accepter</option>
             </select>
-            <button type="submit" class="strategy-button">Set Strategy</button>
+            <button type="submit" class="strategy-button">Choisir</button>
         </form>
     </div>
 
-    <h2>Employees</h2>
+    <h2>Voir les jours de congé demandés</h2>
     <div class="user-list">
         {% for employee in employees %}
             <a href="{{ url_for('hr_dashboard', employee_id=employee.id) }}" class="user-link">

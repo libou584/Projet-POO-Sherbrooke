@@ -52,15 +52,15 @@
     }
 </style>
 <body>
-    <h1>Log In</h1>
+    <h1>Se connecter</h1>
     <div class="user-list">
         {% for user in users %}
             <a class="user-link" href="{{ url_for('login', user_id=user.id) }}">
-                Log In as {{ user.first_name }} {{ user.last_name }}
+                Se connecter en tant que {{ user.first_name }} {{ user.last_name }}
             </a>
         {% endfor %}
     </div>
-    <a href="{{ url_for('new_user') }}" class="new-user-link">Add a new user</a>
+    <a href="{{ url_for('new_user') }}" class="new-user-link">Ajouter un nouvel utilisateur</a>
 </body>
 {% endblock %}
 </html>

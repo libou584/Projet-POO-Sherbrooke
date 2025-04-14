@@ -72,14 +72,14 @@
     }
 </style>
 <body>
-    <h1>Create New User</h1>
+    <h1>Ajouter un nouvel utilisateur</h1>
     <form method="POST" action="{{ url_for('new_user') }}">
         <div class="form-group">
-            <label for="first_name">First Name:</label>
+            <label for="first_name">Prénom:</label>
             <input type="text" id="first_name" name="first_name" required>
         </div>
         <div class="form-group">
-            <label for="last_name">Last Name:</label>
+            <label for="last_name">Nom de famille:</label>
             <input type="text" id="last_name" name="last_name" required>
         </div>
         <div class="form-group">
@@ -87,15 +87,15 @@
             <input type="number" id="age" name="age" required>
         </div>
         <div class="form-group">
-            <label for="role">Role:</label>
+            <label for="role">Status:</label>
             <select id="role" name="role" required>
-                <option value="employee">Employee</option>
-                <option value="hr">HR</option>
+                <option value="employee">Employé</option>
+                <option value="hr">RH</option>
             </select>
         </div>
-        <button type="submit">Create User</button>
+        <button type="submit">Ajouter</button>
     </form>
-    <a href="{{ url_for('login') }}" class="back-link">Back to Login</a>
+    <a href="{{ url_for('login') }}" class="back-link">Retour</a>
 </body>
 {% endblock %}
 </html>

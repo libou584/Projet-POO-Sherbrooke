@@ -22,8 +22,8 @@ EmployeeNotificationObserver(application)
 
 
 class BookingForm(FlaskForm):
-    date = DateField('Select a Date (format mm/dd/yyy)', format = '%Y-%m-%d', validators = [DataRequired()])
-    submit = SubmitField('Book Day Off')
+    date = DateField('Séléctionner un jour (format mm/dd/yyy)', format = '%Y-%m-%d', validators = [DataRequired()])
+    submit = SubmitField('Demander')
 
 
 @app.route('/', methods = ['GET'])
@@ -39,6 +39,8 @@ def index():
 
 @app.route('/index_employee', methods = ['GET', 'POST'])
 def index_employee():
+    if not application.user:
+        return redirect(url_for('login'))
     form = BookingForm()
     if form.validate_on_submit():
         date = form.date.data.strftime('%Y-%m-%d')
@@ -65,6 +67,8 @@ def index_hr():
 
 @app.route('/hr_dashboard/<int:employee_id>', methods = ['GET'])
 def hr_dashboard(employee_id):
+    if not application.user:
+        return redirect(url_for('login'))
     employee = application.repository_facade.get_user_by_id(employee_id)
     booked_days = application.repository_facade.get_booked_days_by_employee_id(employee_id)
     
@@ -84,10 +88,10 @@ def approve_day_off(employee_id: int, date: str, hr_id: int):
     action = request.form.get('action')
     if action == 'approve':
         application.repository_facade.approve_day_off(employee_id, date, hr_id)
-        application.notify_observers("employee", employee_id, f"Your day off on {date} has been approved by {application.user.first_name} {application.user.last_name}.")
+        application.notify_observers("employee", employee_id, f"Votre demande de jour de congé le {date} a été approuvée par {application.user.first_name} {application.user.last_name}.")
     elif action == 'reject':
         application.repository_facade.reject_day_off(employee_id, date, hr_id)
-        application.notify_observers("employee", employee_id, f"Your day off on {date} has been rejected by {application.user.first_name} {application.user.last_name}.")
+        application.notify_observers("employee", employee_id, f"Votre demande de jour de congé le {date} a été refusée par {application.user.first_name} {application.user.last_name}.")
     
     return redirect(url_for('hr_dashboard', employee_id = employee_id))
 

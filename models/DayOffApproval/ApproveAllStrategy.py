@@ -14,4 +14,4 @@ class ApproveAllStrategy(DayOffApprovalStrategy):
         from models.Application import Application
         application = Application()
         application.repository_facade.approve_day_off(employee_id, day, -1)
-        application.notify_observers("employee", employee_id, f"Your day off on {day} has been approved by the system.")
+        application.notify_observers("employee", employee_id, f"Votre demande de jour de congé le {day} a été approuvée par le système.")
