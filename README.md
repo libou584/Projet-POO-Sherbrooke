@@ -35,3 +35,11 @@ Le DP observer est utilisé par dessus le système de notification dans l'applic
 <p align="center">
     <img src="images/observer.png" alt="Observer DP">
 </p>
+
+### DP Factory
+
+Le DP factory est utilisé pour générer des rapports PDF ou HTML sur les employés. La génération de rapport en elle-même n'est pas encore implémentée. Ce DP est utile en cas d'ajout d'un nouveau type de rapport: il suffirait de modifier le provider et d'ajouter la nouvelle factory.
+
+<p align="center">
+    <img src="images/factory.png" alt="Factory DP">
+</p>
