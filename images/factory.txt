@@ -1,0 +1,26 @@
+@startuml
+
+class Main
+
+class ReportFactoryProvider {
+  + get_report_factory(): static
+}
+
+abstract class ReportFactory {
+  + create_report()
+}
+
+class PDFReportFactory
+class HTMLReportFactory
+
+
+Main --> ReportFactoryProvider: utilise
+ReportFactory -[hidden]right- ReportFactoryProvider
+
+ReportFactory <|.. PDFReportFactory
+ReportFactory <|.. HTMLReportFactory
+
+ReportFactoryProvider ..> PDFReportFactory: crée
+ReportFactoryProvider ..> HTMLReportFactory: crée
+
+@enduml
