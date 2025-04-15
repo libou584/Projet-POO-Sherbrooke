@@ -56,7 +56,7 @@ def book_a_day_off():
             application.approve_day_off(application.user.id, date)
             application.user.refresh()
             application.notify_observers("hr", -1, f"Un jour de congé a été demandé par {application.user.first_name} {application.user.last_name} pour le {date}.")
-        return redirect(url_for('index'))
+        return redirect(url_for('book_a_day_off'))
     return render_template("pages/book_a_day_off.html", user = application.user, form = form, booked_days = application.user.booked_days)
 
 
