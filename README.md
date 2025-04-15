@@ -22,7 +22,7 @@ Le DP facade est utilisé pour simplifier les interactions avec la base de donn�
 
 ### DP Strategy
 
-Le DP Strategy est utilisé pour approuver ou refuser automatiquement les jours de congé des employés. Le système peut aussi laisser la main aux RH. La stratégie est déterminée à l'exécution et ce sont les RH qui décident de la stratégie à adopter. Une instance de la stratégie est conservée dans ``Application``.
+Le DP Strategy est utilisé pour approuver ou refuser automatiquement les jours de congé des employés. Le système peut aussi laisser la main aux RH. La stratégie est déterminée à l'exécution et ce sont les RH qui décident de la stratégie à adopter. Une instance de la stratégie est conservée dans ``Application`` et utilise ``ApprovalStrategyProvider`` pour obtenir la bonne stratégie.
 
 <p align="center">
     <img src="images/strategy.png" alt="Strategy DP">
