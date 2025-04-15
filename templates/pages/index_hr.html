@@ -159,6 +159,7 @@
             <select name="strategy" class="strategy-select">
                 <option value="HRToApprove" {% if current_strategy is not none and current_strategy.__class__.__name__ == 'HRToApproveStategy' %}selected{% endif %}>Approbation des RH requise</option>
                 <option value="ApproveAll" {% if current_strategy is not none and current_strategy.__class__.__name__ == 'ApproveAllStrategy' %}selected{% endif %}>Tout accepter</option>
+                <option value="RejectAll" {% if current_strategy is not none and current_strategy.__class__.__name__ == 'RejectAllStrategy' %}selected{% endif %}>Tout refuser</option>
             </select>
             <button type="submit" class="strategy-button">Choisir</button>
         </form>
