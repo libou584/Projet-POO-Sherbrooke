@@ -56,3 +56,6 @@ class RepositoryFacade:
     
     def get_all_notifications(self):
         return self.__notification_repository.get_all_notifications()
+    
+    def get_notifications_by_user_id(self, user_id: int):
+        return self.__notification_repository.get_notifications_by_user_id(user_id)

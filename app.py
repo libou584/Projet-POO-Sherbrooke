@@ -37,8 +37,15 @@ def index():
     return redirect(url_for('login'))
 
 
-@app.route('/index_employee', methods = ['GET', 'POST'])
+@app.route('/index_employee', methods = ['GET'])
 def index_employee():
+    if not isinstance(application.user, Employee):
+        return redirect(url_for('login'))
+    return render_template("pages/index_employee.html", user = application.user)
+
+
+@app.route('/book_a_day_off', methods = ['GET', 'POST'])
+def book_a_day_off():
     if not application.user:
         return redirect(url_for('login'))
     form = BookingForm()
@@ -48,8 +55,9 @@ def index_employee():
         if res:
             application.approve_day_off(application.user.id, date)
             application.user.refresh()
+            application.notify_observers("hr", -1, f"Un jour de congé a été demandé par {application.user.first_name} {application.user.last_name} pour le {date}.")
         return redirect(url_for('index'))
-    return render_template("pages/index_employee.html", user = application.user, form = form, booked_days = application.user.booked_days)
+    return render_template("pages/book_a_day_off.html", user = application.user, form = form, booked_days = application.user.booked_days)
 
 
 @app.route('/index_hr', methods=['GET', 'POST'])
@@ -121,6 +129,17 @@ def new_user():
             application.login(application.repository_facade.get_user_by_id(user_id))
             return redirect(url_for('index'))
     return render_template("pages/new_user.html")
+
+
+@app.route('/notifications')
+def notifications():
+    if not application.user:
+        return redirect(url_for('login'))
+    if isinstance(application.user, Employee):
+        notifications = application.repository_facade.get_notifications_by_user_id(application.user.id)
+    else:
+        notifications = application.repository_facade.get_notifications_by_user_id(-1)
+    return render_template('pages/notification.html', notifications=notifications, user=application.user, hr=isinstance(application.user, Hr))
 
 
 @app.route('/login', methods = ['GET'])
