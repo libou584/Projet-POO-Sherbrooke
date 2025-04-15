@@ -135,3 +135,13 @@ def test_get_booked_days_by_hr(mock_repository_facade):
     booked_days = application.repository_facade.get_booked_days_by_hr_id(hr_id)
     assert len(booked_days) == 1
     assert booked_days[0][0] == employee_id
+
+def test_send_hr_notification(mock_repository_facade):
+    mock_repository_facade.clear_tables()
+    application = Application()
+    application.repository_facade = mock_repository_facade
+
+    application.repository_facade.send_hr_notification("Test notification")
+
+    notifications = application.repository_facade.get_all_notifications()
+    assert len(notifications) == 1

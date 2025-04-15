@@ -1,6 +1,7 @@
 import pytest
 from models.Application import Application
 from models.DayOffApproval.HRToApproveStrategy import HRToApproveStategy
+from models.Users.Employee import Employee
 
 
 def test_application_instance():

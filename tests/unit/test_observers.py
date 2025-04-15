@@ -18,10 +18,12 @@ def test_remove_observer():
     assert observer not in application.observers
 
 def test_notify_observers(mock_repository_facade):
+    mock_repository_facade.clear_tables()
     application = Application()
+    while len(application.observers) > 0:
+        application.remove_observer(application.observers[0])
     application.repository_facade = mock_repository_facade
     EmployeeNotificationObserver(application)
-    HrNotificationObserver(application)
-    application.notify_observers("employee", 1, "test_message")
-    application.notify_observers("hr", -1, "test_message")
-    assert len(application.repository_facade.get_all_notifications()) == 2
+    application.notify_observers("employee", 1, "test")
+    print(application.observers)
+    assert len(application.repository_facade.get_notifications_by_user_id(1)) == 1
